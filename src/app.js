@@ -1,3 +1,4 @@
+// import
 const express = require("express")
 const cors = require("cors")
 const mongoose = require("mongoose")
@@ -6,6 +7,7 @@ const user_router = require("./routers/user_routers")
 const dotenv = require("dotenv")
 dotenv.config()
 
+// use middleware
 const corsOptions = {
 	origin: ["https://manufacturer-website-server.herokuapp.com/"],
 	preflightContinue: false,
@@ -15,17 +17,14 @@ const corsOptions = {
 app.use(cors(corsOptions))
 app.use(express.json())
 
-// Custom middleware
-const verifyToken = (req, res, next) => {
-	console.log("from verifyToken function")
-	next()
-}
-
+// connect mongoose
 mongoose
 	.connect(process.env.mongodb_uri)
 	.then(() => console.log("connected"))
 	.catch((err) => console.log(err))
 
-app.use("/user", verifyToken, user_router)
+// routes
+app.use("/user", user_router)
 
+// app listen
 app.listen(process.env.PORT || 5000)
