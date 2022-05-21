@@ -1,8 +1,8 @@
 const express = require("express")
 const cors = require("cors")
-const router = require("./routers/routers")
-const { MongoClient, ServerApiVersion } = require("mongodb")
+const mongoose = require("mongoose")
 const app = express()
+const user_router = require("./routers/user_routers")
 const dotenv = require("dotenv")
 dotenv.config()
 
@@ -15,24 +15,17 @@ const corsOptions = {
 app.use(cors(corsOptions))
 app.use(express.json())
 
-const uri = `mongodb+srv://${process.env.mongodb_user_name}:${process.env.mongodb_password}@cluster0.ajlcv.mongodb.net/?retryWrites=true&w=majority`
-const client = new MongoClient(uri, {
-	useNewUrlParser: true,
-	useUnifiedTopology: true,
-	serverApi: ServerApiVersion.v1,
-})
-
-const run = async () => {
-	try {
-		await client.connect()
-		const userCollections = client.db("manufacturer").collections("user")
-
-		app.use(router)
-	} finally {
-		console.log("Succes")
-	}
+// Custom middleware
+const verifyToken = (req, res, next) => {
+	console.log("from verifyToken function")
+	next()
 }
 
-run().catch(() => console.dir())
+mongoose
+	.connect(process.env.mongodb_uri)
+	.then(() => console.log("connected"))
+	.catch((err) => console.log(err))
+
+app.use("/user", verifyToken, user_router)
 
 app.listen(process.env.PORT || 5000)
