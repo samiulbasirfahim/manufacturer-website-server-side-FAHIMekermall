@@ -3,7 +3,7 @@ import cors from "cors"
 const app = express()
 
 const corsOptions = {
-	origin: ["https://playlist-manager-admin.herokuapp.com/"],
+	origin: ["https://manufacturer-website-server.herokuapp.com/"],
 	preflightContinue: false,
 	credentials: true,
 }
