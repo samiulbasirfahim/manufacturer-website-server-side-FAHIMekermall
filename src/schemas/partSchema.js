@@ -1,9 +1,6 @@
 const mongoose = require('mongoose')
 
 const partSchema = new mongoose.Schema({
-    _id: {
-        type: Object,
-    },
     title: {
         type: String,
         required: true
@@ -32,3 +29,5 @@ const partSchema = new mongoose.Schema({
     }
 
 })
+
+module.exports = partSchema
