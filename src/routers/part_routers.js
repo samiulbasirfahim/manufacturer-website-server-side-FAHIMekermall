@@ -29,8 +29,9 @@ router.get('/', async (req, res) => {
     if (req.query.limit) {
         options.limit = req.query.limit
     }
-    if (req.query.page || req.query.limit) {
-        options.skip = req.query.page
+    let skip;
+    if (req.query.skip) {
+        skip = req.query.skip
     }
     Part.find({}, "", options, (err, data) => {
         if (err) {
@@ -38,7 +39,7 @@ router.get('/', async (req, res) => {
         } else {
             res.send(data)
         }
-    })
+    }).skip(skip)
 
 })
 
