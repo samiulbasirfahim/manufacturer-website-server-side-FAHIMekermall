@@ -37,8 +37,7 @@ router.put('/', async (req, res) => {
 					})
 					res.status(200).send({ user: user, token: user['token'] })
 				}
-			}
-		)
+			})
 	}
 })
 
