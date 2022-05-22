@@ -32,7 +32,10 @@ router.put('/', async (req, res) => {
 				if (err) {
 					return res.status(500).send({ message: "there was a server side error" })
 				} else {
-					res.status(200).send(user)
+					user.token = jwt.sign({ email: user.email }, process.env.secret_key, {
+						expiresIn: '1h'
+					})
+					res.status(200).send({ user: user, token: user['token'] })
 				}
 			}
 		)
