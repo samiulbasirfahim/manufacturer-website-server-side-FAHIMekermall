@@ -16,32 +16,28 @@ router.get("/", (req, res) => {
 
 
 // add user and issue token
-router.put("/:email", async (req, res) => {
-	const { email } = req.params
-	const userInfo = req.body.userInfo
-	if (!userInfo) {
-		return res.status(500).send({ message: "User info not found" })
-	}
-	if (userInfo.roles) {
-		return res.status(403).send({ message: "You cant make you admin when you create a account" })
-	}
-	User.findOneAndUpdate(
-		{ email: email },
-		{ $set: userInfo },
-		{ upsert: true, new: true },
-		(err) => {
-			if (isNaN(err?.result?.lastErrorObject?.updatedExisting)) {
-				return res.status(500).send('something wrong')
-			} else {
-				err.result.lastErrorObject.token = jwt.sign({ email: email }, process.env.secret_key, {
-					expiresIn: '1hr'
-				})
-				res.send(err.result.lastErrorObject)
-			}
-		}
-	)
-})
 
+router.put('/', async (req, res) => {
+	const userInfo = req.body
+	if (!userInfo.email) {
+		console.log(userInfo)
+		return res.status(403).send({ Message: 'Invalid user info' })
+	} if (userInfo.roles) {
+		return res.status(403).send({ message: "You cant make admin when you create a account" })
+	} if (userInfo.email) {
+		User.findOneAndUpdate(
+			{ email: userInfo.email },
+			{ $set: userInfo },
+			{ upsert: true, new: true }, (err, user) => {
+				if (err) {
+					return res.status(500).send({ message: "there was a server side error" })
+				} else {
+					res.status(200).send(user)
+				}
+			}
+		)
+	}
+})
 
 // make admin or remove admin
 router.put('/roles/:email', async (req, res) => {
