@@ -10,8 +10,8 @@ const User = new mongoose.model("User", userSchema)
 
 
 // get all users
-router.get("/", verifyToken, (req, res) => {
-	res.send("hello world")
+router.get("/", (req, res) => {
+	res.send('hello world')
 })
 
 
