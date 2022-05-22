@@ -51,9 +51,12 @@ router.put('/roles/:email', async (req, res) => {
 		}
 	}
 	User.findOneAndUpdate(
-		query, updatedDoc, { upsert: true }, (err, doc) => {
-			console.log('hello')
-			res.send({ err: err, doc: doc })
+		query, updatedDoc, { upsert: true }, (err, data) => {
+			if (err) {
+				return res.status(500).send({ message: "there was a server side error" })
+			} else {
+				res.send(data)
+			}
 		}
 	)
 
