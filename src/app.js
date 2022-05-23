@@ -10,12 +10,12 @@ dotenv.config()
 
 // use middleware
 const corsOptions = {
-	origin: ["https://manufacturer-website-server.herokuapp.com/"],
+	origin: ["https://manufacturer-website-server.herokuapp.com/", "http://localhost:4000/"],
 	preflightContinue: false,
 	credentials: true,
 }
 
-app.use(cors(corsOptions))
+app.use(cors())
 app.use(express.json())
 
 // connect mongoose
@@ -27,6 +27,6 @@ mongoose
 // routes
 app.use("/user", user_router)
 app.use('/part', part_router)
- 
+
 // app listen
 app.listen(process.env.PORT || 4000)

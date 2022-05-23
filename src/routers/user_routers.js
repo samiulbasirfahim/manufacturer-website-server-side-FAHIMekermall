@@ -5,20 +5,18 @@ const verifyToken = require("../middleware/verifyToken")
 const userSchema = require("../schemas/userSchema")
 const jwt = require("jsonwebtoken")
 const router = express.Router()
-
 const User = new mongoose.model("User", userSchema)
-
 
 // get all users
 router.get("/", (req, res) => {
 	res.send('hello world')
 })
 
-
 // add user and issue token
 
 router.put('/', async (req, res) => {
 	const userInfo = req.body
+	console.log('hit api')
 	if (!userInfo.email) {
 		console.log(userInfo)
 		return res.status(403).send({ Message: 'Invalid user info' })
@@ -40,7 +38,6 @@ router.put('/', async (req, res) => {
 			})
 	}
 })
-
 // make admin or remove admin
 router.put('/roles/:email', async (req, res) => {
 	const query = { email: req.params.email }

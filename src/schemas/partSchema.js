@@ -27,7 +27,6 @@ const partSchema = new mongoose.Schema({
         type: Number,
         required: true
     }
-
 })
 
 module.exports = partSchema
