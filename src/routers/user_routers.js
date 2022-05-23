@@ -16,7 +16,6 @@ router.get("/", (req, res) => {
 
 router.put('/', async (req, res) => {
 	const userInfo = req.body
-	console.log('hit api')
 	if (!userInfo.email) {
 		console.log(userInfo)
 		return res.status(403).send({ Message: 'Invalid user info' })
@@ -31,7 +30,7 @@ router.put('/', async (req, res) => {
 					return res.status(500).send({ message: "there was a server side error" })
 				} else {
 					user.token = jwt.sign({ email: user.email }, process.env.secret_key, {
-						expiresIn: '1h'
+						expiresIn: '1d'
 					})
 					res.status(200).send({ user: user, token: user['token'] })
 				}
@@ -60,6 +59,16 @@ router.put('/roles/:email', async (req, res) => {
 	)
 
 })
+
+// get user data
+router.get('/:email', async (req, res) => {
+	const query = { email: req.params.email }
+	const user = await User.findOne({ query })
+	// console.log(user, 'user')
+	res.send(user)
+})
+
+
 
 
 module.exports = router

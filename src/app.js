@@ -6,6 +6,7 @@ const app = express()
 const user_router = require("./routers/user_routers")
 const dotenv = require("dotenv")
 const part_router = require("./routers/part_routers")
+const booking_router = require("./routers/booking_router")
 dotenv.config()
 
 // use middleware
@@ -24,9 +25,10 @@ mongoose
 	.then(() => console.log("connected"))
 	.catch((err) => console.log(err))
 
-// routes
+// routers
 app.use("/user", user_router)
 app.use('/part', part_router)
+app.use('/booking', booking_router)
 
 // app listen
 app.listen(process.env.PORT || 4000)

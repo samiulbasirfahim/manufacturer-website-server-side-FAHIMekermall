@@ -18,7 +18,13 @@ router.post('/', async (req, res) => {
         }
     })
 })
-
+// get one part api 
+router.get('/:id', async (req, res) => {
+    const query = { _id: req.params.id }
+    console.log(query)
+    const part = await Part.findOne(query)
+    res.send(part)
+})
 
 // get all part api 
 router.get('/', async (req, res) => {
@@ -26,7 +32,7 @@ router.get('/', async (req, res) => {
     if (req.query.limit) {
         console.log(req.query.limit)
         options.limit = +req.query.limit
-    } 
+    }
     let skip;
     if (req.query.skip) {
         skip = req.query.skip
