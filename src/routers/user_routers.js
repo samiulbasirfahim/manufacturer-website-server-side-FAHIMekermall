@@ -17,7 +17,6 @@ router.get("/", (req, res) => {
 router.put('/', async (req, res) => {
 	const userInfo = req.body
 	if (!userInfo.email) {
-		console.log(userInfo)
 		return res.status(403).send({ Message: 'Invalid user info' })
 	} if (userInfo.roles) {
 		return res.status(403).send({ message: "You cant make admin when you create a account" })
@@ -62,12 +61,23 @@ router.put('/roles/:email', async (req, res) => {
 
 // get user data
 router.get('/:email', async (req, res) => {
-	const query = { email: req.params.email }
-	const user = await User.findOne({ query })
-	// console.log(user, 'user')
+	const user = await User.findOne({ email: req.params.email })
 	res.send(user)
 })
 
+// edit user
+router.put("/:email", async (req, res) => {
+	await User.updateOne({ email: req.params.email }, { $set: { ...req.body } })
+		.then((data) =>
+			res.send(data)
+		)
+		.catch(
+			error => {
+				res.status(500).send({ message: "there was a server side error" })
+			}
+		);
+
+})
 
 
 

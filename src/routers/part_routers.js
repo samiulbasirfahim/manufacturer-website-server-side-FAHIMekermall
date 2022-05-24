@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const partSchema = require('../schemas/partSchema');
 const router = express.Router()
 const Part = new mongoose.model("Part", partSchema)
+const bookingSchema = require('../schemas/bookingSchema');
+const Booking = new mongoose.model("Booking", bookingSchema)
 
 // add part api 
 router.post('/', async (req, res) => {
@@ -18,6 +20,13 @@ router.post('/', async (req, res) => {
         }
     })
 })
+// get total number of parts
+router.get('/count', async (req, res) => {
+    Part.find().count((err, count) => { res.send({ count }); });
+})
+
+
+
 // get one part api 
 router.get('/:id', async (req, res) => {
     const query = { _id: req.params.id }
@@ -51,13 +60,16 @@ router.get('/', async (req, res) => {
                 break
         }
     }
-    Part.find({}, "", options, (err, data) => {
-        if (err) {
-            return res.status(500).send({ message: "there was an server side error" })
-        } else {
-            res.send(data)
-        }
-    }).skip(skip).sort(sort);
+    const booked = await Booking.find({})
+    const parts = await Part.find({}).limit(req.query.limit).sort(sort).skip(skip)
+    await parts.forEach(async part => {
+        const bookedForThisPart = await booked.filter(book => book.partId === part._id + "")
+        const bookedQuantityArray = bookedForThisPart.map(book => book.quantity)
+        const bookedQuantity = bookedQuantityArray.reduce((partialSum, a) => partialSum + a, 0);
+        console.log(bookedQuantity)
+        part.availableQuantity = part.availableQuantity - bookedQuantity
+    })
+    res.send(parts)
 
 })
 

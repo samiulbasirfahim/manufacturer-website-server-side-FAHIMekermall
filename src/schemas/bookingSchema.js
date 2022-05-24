@@ -5,6 +5,10 @@ const bookingSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    partTitle: {
+        type: String,
+        required: true
+    },
     partId: {
         type: String,
         required: true

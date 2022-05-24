@@ -13,7 +13,7 @@ router.get('/', async (req, res) => {
                 sort = { _id: -1 }
                 break
             case "2":
-                sort = { price: 1 }
+                sort = { totalPrice: 1 }
                 break
             case "3":
                 sort = { quantity: -1 }
@@ -21,6 +21,33 @@ router.get('/', async (req, res) => {
         }
     }
     Booking.find({}, (err, data) => {
+        if (err) {
+            return res.status(500).send({ message: "there was an server side error" })
+        } else {
+            res.send(data)
+        }
+    }).sort(sort);
+
+})
+
+// get my orders
+router.get('/:userEmail', async (req, res) => {
+    const query = { userEmail: req.params.userEmail }
+    let sort;
+    if (req.query.sort) {
+        switch (req.query.sort) {
+            case "1":
+                sort = { _id: -1 }
+                break
+            case "2":
+                sort = { totalPrice: 1 }
+                break
+            case "3":
+                sort = { quantity: -1 }
+                break
+        }
+    }
+    Booking.find({ userEmail: req.params.userEmail }, (err, data) => {
         if (err) {
             return res.status(500).send({ message: "there was an server side error" })
         } else {
@@ -43,5 +70,24 @@ router.post('/', async (req, res) => {
         }
     })
 })
+
+
+// remove booking 
+router.delete('/:id', async (req, res, next) => {
+    Booking.findOneAndRemove({ _id: req.params.id })
+        .then((user) => {
+            if (!user) {
+                res.status(400).send({ success: false });
+            } else {
+                res.status(200).send({ success: true });
+            }
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send({ message: 'there was a server side error' });
+        });
+})
+
+
 
 module.exports = router
