@@ -6,14 +6,14 @@ const bookingSchema = new mongoose.Schema({
         required: true
     },
     partId: {
-        type: Number,
+        type: String,
         required: true
     },
     quantity: {
         type: Number,
         required: true
     },
-    TotalPrice: {
+    totalPrice: {
         type: Number,
         required: true
     },
@@ -21,9 +21,16 @@ const bookingSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    address: {
+        type: String,
+        required: true
+    },
+    phone: {
+        type: Number,
+        required: true
+    },
     paid: {
         type: Boolean,
-        required: true
     }
 
 })

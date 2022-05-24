@@ -30,4 +30,18 @@ router.get('/', async (req, res) => {
 
 })
 
+
+// add booking 
+router.post('/', async (req, res) => {
+    const newBooking = new Booking(req.body)
+    console.log(newBooking)
+    newBooking.save((err, data) => {
+        if (err) {
+            res.status(500).send({ message: "There was a server side error", err });
+        } else {
+            res.status(200).send({ data })
+        }
+    })
+})
+
 module.exports = router
