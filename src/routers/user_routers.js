@@ -59,6 +59,12 @@ router.put('/roles/:email', async (req, res) => {
 
 })
 
+// get user number 
+router.get('/count', async (req, res) => {
+	User.find().count((err, count) => { res.send({ count }); });
+})
+
+
 // get user data
 router.get('/:email', async (req, res) => {
 	const user = await User.findOne({ email: req.params.email })

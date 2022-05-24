@@ -26,7 +26,6 @@ router.get('/count', async (req, res) => {
 })
 
 
-
 // get one part api 
 router.get('/:id', async (req, res) => {
     const query = { _id: req.params.id }
