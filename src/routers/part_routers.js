@@ -32,6 +32,10 @@ router.get('/:id', async (req, res) => {
     const query = { _id: req.params.id }
     console.log(query)
     const part = await Part.findOne(query)
+    const booked = await Booking.find({ partId: req.params.id })
+    const bookedQuantityArray = booked.map((book) => book.quantity)
+    const bookedQuantity = bookedQuantityArray.reduce((partialSum, a) => partialSum + a, 0);
+    part.availableQuantity = part.availableQuantity - bookedQuantity
     res.send(part)
 })
 
