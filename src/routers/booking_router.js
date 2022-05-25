@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const verifyToken = require('../middleware/verifyToken');
 const bookingSchema = require('../schemas/bookingSchema');
 const router = express.Router()
 const Booking = new mongoose.model("Booking", bookingSchema)
@@ -8,7 +9,7 @@ const Booking = new mongoose.model("Booking", bookingSchema)
 
 
 // pay booking
-router.put('/pay/:id', async (req, res) => {
+router.put('/pay/:id', verifyToken, async (req, res) => {
     const exist = await Booking.findOne({ _id: req.params.id })
     exist.transactionId = req.body.transactionId;
     exist.paid = true;
@@ -30,7 +31,7 @@ router.get('/count', async (req, res) => {
 
 
 // get one booking by id
-router.get('/getOne/:id', async (req, res) => {
+router.get('/getOne/:id', verifyToken, async (req, res) => {
     Booking.findOne({ _id: req.params.id }, (err, booking) => {
         if (err) {
             res.status(500).send({ message: 'there was a server side error' });
@@ -42,7 +43,7 @@ router.get('/getOne/:id', async (req, res) => {
 
 
 // get all booking
-router.get('/', async (req, res) => {
+router.get('/',verifyToken, async (req, res) => {
     let sort;
     if (req.query.sort) {
         switch (req.query.sort) {
@@ -68,7 +69,7 @@ router.get('/', async (req, res) => {
 })
 
 // get my orders
-router.get('/:userEmail', async (req, res) => {
+router.get('/:userEmail', verifyToken, async (req, res) => {
     let sort;
     if (req.query.sort) {
         switch (req.query.sort) {
@@ -95,7 +96,7 @@ router.get('/:userEmail', async (req, res) => {
 
 
 // add booking 
-router.post('/', async (req, res) => {
+router.post('/', verifyToken, async (req, res) => {
     const newBooking = new Booking(req.body)
     console.log(newBooking)
     newBooking.save((err, data) => {
@@ -109,7 +110,7 @@ router.post('/', async (req, res) => {
 
 
 // remove booking 
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:id', verifyToken, async (req, res, next) => {
     Booking.findOneAndRemove({ _id: req.params.id })
         .then((user) => {
             if (!user) {
