@@ -35,7 +35,19 @@ const bookingSchema = new mongoose.Schema({
     },
     paid: {
         type: Boolean,
+        default: false,
+    },
+    imageUrl: {
+        type: String,
+        required: true
+    },
+    category: {
+        type: String,
+        required: true,
+        enum: ['cycle', 'bike', 'automotive']
     }
+
+
 
 })
 

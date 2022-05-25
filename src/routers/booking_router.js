@@ -4,6 +4,32 @@ const bookingSchema = require('../schemas/bookingSchema');
 const router = express.Router()
 const Booking = new mongoose.model("Booking", bookingSchema)
 
+
+
+
+
+
+
+
+// get booking number
+router.get('/count', async (req, res) => {
+    console.log('object');
+    Booking.find().count((err, count) => { res.send({ count }); });
+})
+
+
+// get one booking by id
+router.get('/getOne/:id', async (req, res) => {
+    Booking.findOne({ _id: req.params.id }, (err, booking) => {
+        if (err) {
+            res.status(500).send({ message: 'there was a server side error' });
+        } else {
+            res.send(booking)
+        }
+    })
+})
+
+
 // get all booking
 router.get('/', async (req, res) => {
     let sort;
@@ -22,7 +48,7 @@ router.get('/', async (req, res) => {
     }
     Booking.find({}, (err, data) => {
         if (err) {
-            return res.status(500).send({ message: "there was an server side error" })
+            return res.status(500).send({ message: "there was an server side error", err })
         } else {
             res.send(data)
         }
@@ -32,7 +58,6 @@ router.get('/', async (req, res) => {
 
 // get my orders
 router.get('/:userEmail', async (req, res) => {
-    const query = { userEmail: req.params.userEmail }
     let sort;
     if (req.query.sort) {
         switch (req.query.sort) {
@@ -49,7 +74,7 @@ router.get('/:userEmail', async (req, res) => {
     }
     Booking.find({ userEmail: req.params.userEmail }, (err, data) => {
         if (err) {
-            return res.status(500).send({ message: "there was an server side error" })
+            return res.status(500).send({ message: "there was an server side error", error: err })
         } else {
             res.send(data)
         }
@@ -87,6 +112,10 @@ router.delete('/:id', async (req, res, next) => {
             res.status(500).send({ message: 'there was a server side error' });
         });
 })
+
+
+
+
 
 
 

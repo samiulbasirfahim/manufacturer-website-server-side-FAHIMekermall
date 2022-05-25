@@ -22,7 +22,29 @@ router.post('/', async (req, res) => {
 })
 // get total number of parts
 router.get('/count', async (req, res) => {
-    Part.find().count((err, count) => { res.send({ count }); });
+    let category;
+
+    if (req.query.category) {
+        switch (req.query.category) {
+            case "all":
+                category = {}
+                break
+            case "bike":
+                category = { category: 'bike' }
+                break
+            case "cycle":
+                category = { category: 'cycle' }
+                break
+            case "car":
+                category = { category: 'car' }
+                break
+            default:
+                category = {}
+                break
+
+        }
+    }
+    Part.find(category).count((err, count) => { res.send({ count }); });
 })
 
 
@@ -63,8 +85,31 @@ router.get('/', async (req, res) => {
                 break
         }
     }
+
+    let category;
+
+    if (req.query.category) {
+        switch (req.query.category) {
+            case "all":
+                category = {}
+                break
+            case "bike":
+                category = { category: 'bike' }
+                break
+            case "cycle":
+                category = { category: 'cycle' }
+                break
+            case "car":
+                category = { category: 'car' }
+                break
+            default:
+                category = {}
+                break
+
+        }
+    }
     const booked = await Booking.find({})
-    const parts = await Part.find({}).limit(req.query.limit).sort(sort).skip(skip)
+    const parts = await Part.find(category).limit(req.query.limit).sort(sort).skip(skip)
     await parts.forEach(async part => {
         const bookedForThisPart = await booked.filter(book => book.partId === part._id + "")
         const bookedQuantityArray = bookedForThisPart.map(book => book.quantity)
