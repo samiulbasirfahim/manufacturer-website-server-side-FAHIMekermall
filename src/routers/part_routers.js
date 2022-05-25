@@ -7,6 +7,19 @@ const bookingSchema = require('../schemas/bookingSchema');
 const verifyAdmin = require('../middleware/verifyAdmin');
 const Booking = new mongoose.model("Booking", bookingSchema)
 
+
+
+router.delete('/:id', verifyAdmin, async (req, res) => {
+    Part.findOneAndDelete({ _id: req.params.id }, (err, isDelete) => {
+        if (err) {
+            res.status(500).send({ message: "there was a server side error", err: err });
+        } else {
+            res.send({ success: true, isDelete: isDelete })
+        }
+    })
+})
+
+
 // add part api 
 router.post('/', verifyAdmin, async (req, res) => {
     if (req.body._id === null) {
