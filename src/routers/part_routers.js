@@ -4,10 +4,11 @@ const partSchema = require('../schemas/partSchema');
 const router = express.Router()
 const Part = new mongoose.model("Part", partSchema)
 const bookingSchema = require('../schemas/bookingSchema');
+const verifyAdmin = require('../middleware/verifyAdmin');
 const Booking = new mongoose.model("Booking", bookingSchema)
 
 // add part api 
-router.post('/', async (req, res) => {
+router.post('/', verifyAdmin, async (req, res) => {
     if (req.body._id === null) {
         delete req.body._id;
     }

@@ -1,11 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const verifyToken = require('../middleware/verifyToken');
 const reviewSchema = require('../schemas/reviewSchema');
 const router = express.Router()
 const Review = new mongoose.model("Review", reviewSchema)
 
 
-router.post('/', async (req, res) => {
+router.post('/', verifyToken, async (req, res) => {
     const newReview = new Review(req.body)
     newReview.save((err, part) => {
         if (err) {
