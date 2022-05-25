@@ -10,6 +10,7 @@ const Booking = new mongoose.model("Booking", bookingSchema)
 
 // pay booking
 router.put('/pay/:id', verifyToken, async (req, res) => {
+    console.log(req.body.transactionId)
     const exist = await Booking.findOne({ _id: req.params.id })
     exist.transactionId = req.body.transactionId;
     exist.paid = true;
@@ -43,7 +44,7 @@ router.get('/getOne/:id', verifyToken, async (req, res) => {
 
 
 // get all booking
-router.get('/',verifyToken, async (req, res) => {
+router.get('/', verifyToken, async (req, res) => {
     let sort;
     if (req.query.sort) {
         switch (req.query.sort) {
