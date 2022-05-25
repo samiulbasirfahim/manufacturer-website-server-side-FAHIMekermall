@@ -8,7 +8,19 @@ const Booking = new mongoose.model("Booking", bookingSchema)
 
 
 
-
+// pay booking
+router.put('/pay/:id', async (req, res) => {
+    const exist = await Booking.findOne({ _id: req.params.id })
+    exist.transactionId = req.body.transactionId;
+    exist.paid = true;
+    Booking.findOneAndUpdate({ _id: req.params.id }, { $set: exist }, { upsert: true }, (err, data) => {
+        if (err) {
+            res.status(500).send({ err: err, message: "there was a server side error" });
+        } else {
+            res.send(data)
+        }
+    })
+})
 
 
 // get booking number
