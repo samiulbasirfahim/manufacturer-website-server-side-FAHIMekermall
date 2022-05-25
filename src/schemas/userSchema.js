@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
 	imageUrl: {
 		type: String,
 		default:
-			"https://www.seekpng.com/png/detail/966-9665317_placeholder-image-person-jpg.png",
+			"https://i.ibb.co/LvsrvZL/126178784-person-gray-photo-placeholder-man-in-a-costume-on-white-background.webp",
 	},
 	name: {
 		type: String,
