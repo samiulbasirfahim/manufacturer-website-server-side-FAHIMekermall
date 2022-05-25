@@ -114,7 +114,6 @@ router.get('/', async (req, res) => {
         const bookedForThisPart = await booked.filter(book => book.partId === part._id + "")
         const bookedQuantityArray = bookedForThisPart.map(book => book.quantity)
         const bookedQuantity = bookedQuantityArray.reduce((partialSum, a) => partialSum + a, 0);
-        console.log(bookedQuantity)
         part.availableQuantity = part.availableQuantity - bookedQuantity
     })
     res.send(parts)
