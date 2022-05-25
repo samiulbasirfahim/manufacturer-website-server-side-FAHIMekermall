@@ -7,7 +7,7 @@ router.post('/intent', async (req, res) => {
     const price = req?.body?.price
     console.log(price)
     const amount = price * 100
-    if (amount > 999, 999.99) {
+    if (amount > 999999) {
         return res.status(500).send({ message: 'Your price is too high' })
     }
     const paymentIntent = await stripe.paymentIntents.create({
