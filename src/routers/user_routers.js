@@ -2,6 +2,7 @@
 const express = require("express")
 const mongoose = require("mongoose")
 const verifyToken = require("../middleware/verifyToken")
+const verifyAdmin = require("../middleware/verifyAdmin")
 const userSchema = require("../schemas/userSchema")
 const jwt = require("jsonwebtoken")
 const router = express.Router()
@@ -37,7 +38,7 @@ router.put('/', async (req, res) => {
 	}
 })
 // make admin or remove admin
-router.put('/roles/:email', async (req, res) => {
+router.put('/roles/:email', verifyAdmin, async (req, res) => {
 	const query = { email: req.params.email }
 	const roles = req.body.roles
 	const user = await User.findOne({ query })
@@ -66,13 +67,13 @@ router.get('/count', async (req, res) => {
 
 
 // get user data
-router.get('/:email', async (req, res) => {
+router.get('/:email', verifyToken, async (req, res) => {
 	const user = await User.findOne({ email: req.params.email })
 	res.send(user)
 })
 
 // edit user
-router.put("/:email", async (req, res) => {
+router.put("/:email", verifyToken, async (req, res) => {
 	await User.updateOne({ email: req.params.email }, { $set: { ...req.body } })
 		.then((data) =>
 			res.send(data)
