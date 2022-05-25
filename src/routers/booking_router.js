@@ -17,7 +17,7 @@ router.put('/pay/:id', async (req, res) => {
         if (err) {
             res.status(500).send({ err: err, message: "there was a server side error" });
         } else {
-            res.send(data)
+            res.send({ success: true })
         }
     })
 })
