@@ -31,6 +31,10 @@ const partSchema = new mongoose.Schema({
         type: String,
         required: true,
         enum: ['cycle', 'bike', 'car']
+    },
+    addedBy: {
+        type: String,
+        required: true
     }
 })
 
