@@ -21,6 +21,24 @@ const userSchema = new mongoose.Schema({
 		type: String,
 		default: 'Bio not available'
 	},
+	education: {
+		type: String,
+		default: 'education not set'
+	},
+	location: {
+		type: String,
+		default: 'location not set'
+	}, phone: {
+		type: Number,
+
+	},
+	linkedin: {
+		type: String,
+	},
+	facebook: {
+		type: String,
+	},
+
 	roles: {
 		type: String,
 		default: 'user'

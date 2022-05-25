@@ -7,7 +7,6 @@ const Booking = new mongoose.model("Booking", bookingSchema)
 
 
 
-
 // pay booking
 router.put('/pay/:id', async (req, res) => {
     const exist = await Booking.findOne({ _id: req.params.id })

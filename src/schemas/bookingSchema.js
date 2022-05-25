@@ -47,7 +47,7 @@ const bookingSchema = new mongoose.Schema({
     category: {
         type: String,
         required: true,
-        enum: ['cycle', 'bike', 'automotive']
+        enum: ['cycle', 'bike', 'car']
     }
 
 
