@@ -45,6 +45,7 @@ router.get('/getOne/:id', verifyToken, async (req, res) => {
 
 // get all booking
 router.get('/', verifyToken, async (req, res) => {
+    console.log('object');
     let sort;
     if (req.query.sort) {
         switch (req.query.sort) {
@@ -56,6 +57,9 @@ router.get('/', verifyToken, async (req, res) => {
                 break
             case "3":
                 sort = { quantity: -1 }
+                break
+            case "4":
+                sort = { shipped: 1 }
                 break
         }
     }
