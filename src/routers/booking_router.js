@@ -126,6 +126,18 @@ router.delete('/:id', verifyToken, async (req, res, next) => {
         });
 })
 
+// shipped quantity
+router.get('/shipped/:id', async (req, res) => {
+    Booking.findOneAndUpdate({
+        _id: req.params.id,
+    }, { shipped: true }, (err, data) => {
+        if (err) {
+            res.status(500).send(err)
+        } else {
+            res.send(data)
+        }
+    })
+})
 
 
 
