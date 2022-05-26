@@ -8,7 +8,7 @@ const jwt = require("jsonwebtoken")
 const router = express.Router()
 const User = new mongoose.model("User", userSchema)
 
-// get all users
+// get all admin
 router.get("/admin", verifyAdmin, (req, res) => {
 	User.find({ roles: "admin" }, (err, users) => {
 		if (err) {
@@ -70,7 +70,7 @@ router.put('/roles/:email', verifyAdmin, async (req, res) => {
 
 })
 
-// get user number 
+// get total user number 
 router.get('/count', async (req, res) => {
 	User.find().count((err, count) => { res.send({ count }); });
 })
