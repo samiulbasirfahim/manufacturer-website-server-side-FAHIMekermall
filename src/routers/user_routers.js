@@ -9,8 +9,14 @@ const router = express.Router()
 const User = new mongoose.model("User", userSchema)
 
 // get all users
-router.get("/", (req, res) => {
-	res.send('hello world')
+router.get("/admin", verifyAdmin, (req, res) => {
+	User.find({ roles: "admin" }, (err, users) => {
+		if (err) {
+			res.status(500).send({ message: "There was a server side error" })
+		} else {
+			res.send(users)
+		}
+	})
 })
 
 // add user and issue token
@@ -41,15 +47,19 @@ router.put('/', async (req, res) => {
 router.put('/roles/:email', verifyAdmin, async (req, res) => {
 	const query = { email: req.params.email }
 	const roles = req.body.roles
-	const user = await User.findOne({ query })
-	const updatedDoc = {
-		$set: {
-			...user,
-			roles: roles
-		}
+	const user = await User.findOne({ email: req.params.email })
+	if (!user?._id) {
+		return res.send({ errMessage: 'User not found' })
 	}
+	console.log(user)
+	console.log(query)
+	if (req.body.roles === 'admin' && user.roles === 'admin') {
+		return res.send({ errMessage: "User already an admin" })
+	}
+	console.log(user, 'hello')
+	user.roles = roles
 	User.findOneAndUpdate(
-		query, updatedDoc, { upsert: true }, (err, data) => {
+		query, { $set: user }, { upsert: true }, (err, data) => {
 			if (err) {
 				return res.status(500).send({ message: "there was a server side error" })
 			} else {
