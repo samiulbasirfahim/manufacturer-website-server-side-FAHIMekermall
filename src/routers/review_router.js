@@ -18,7 +18,7 @@ router.post('/', verifyToken, async (req, res) => {
 })
 
 router.get('/', async (req, res) => {
-    Review.find({}, "", { limit: 10, sort: { _id: -1 } }, (err, review) => {
+    Review.find({}, "", { sort: { _id: -1 } }, (err, review) => {
         res.status(200).send(review)
     })
 })
